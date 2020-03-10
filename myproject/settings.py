@@ -20,7 +20,18 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'nysr0+#u(d!w0j-^y95o-l71ix($(l&%0&8^pu4td)+$a*c#gq'
+from decouple import config, Csv
+import dj_database_url
+
+SECRET_KEY = config('SECRET_KEY')
+DEBUG = config('DEBUG', default=False, cast=bool)
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
+DATABASES = {
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL')
+    )
+}
+#SECRET_KEY = 'nysr0+#u(d!w0j-^y95o-l71ix($(l&%0&8^pu4td)+$a*c#gq'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
